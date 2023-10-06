@@ -8,11 +8,11 @@ const sellStrategy = {
   operator: STRATEGY_OPERATORS.OR,
   conditions: [
     // 利润大于 10 USD 才卖出
-    { type: STRATEGY_TYPES.BENEFIT, value: 100 },
+    { type: STRATEGY_TYPES.BENEFIT, value: > 0.000085 },
     // 持有时间超过多少小时后不管盈亏直接卖出(暂不支持)
     // { type: STRATEGY_TYPES.HOLDING_DURATION, value: 240 },
   ],
-  specifies: [
+  /*specifies: [
     {
       addresses: ["0x634b5B0D940f6A4C48d5E6180a47EBb543a23F46"],
       strategy: {
@@ -24,7 +24,7 @@ const sellStrategy = {
         ],
       },
     },
-  ],
+  ],*/
 };
 
 /** 不自动出售的名单 */
@@ -75,15 +75,15 @@ const evaluateStrategy = (strategy, profit) => {
 
 export const shouldSell = (subject, profit) => {
   // 检查是否地址在 specifies 中
-  for (let specify of sellStrategy.specifies) {
-    if (
-      specify.addresses.some(
-        (address) => address.toLowerCase() === subject.toLowerCase()
-      )
-    ) {
-      return evaluateStrategy(specify.strategy, profit);
-    }
-  }
+  //for (let specify of sellStrategy.specifies) {
+   // if (
+    //  specify.addresses.some(
+     //   (address) => address.toLowerCase() === subject.toLowerCase()
+     // )
+   // ) {
+   //   return evaluateStrategy(specify.strategy, profit);
+  //  }
+ // }
 
   // 如果地址不在 specifies 中, 使用默认策略
   return evaluateStrategy(sellStrategy, profit);
