@@ -62,7 +62,7 @@ const main = async (wallet) => {
     transport: http(),
   });
 
-  const gasLimit = "400000";
+  const gasLimit = "400001";
   const maxBuyPrice = getMaxPrice();
 
   let nonce = 56;
@@ -142,7 +142,7 @@ const main = async (wallet) => {
         balance: 1,
         price: ethPrice,
         username: username,
-        twitterUrl: `https://twitter.com/${username}`,
+        //twitterUrl: `https://twitter.com/${username}`,
       };
       holdings.push(newShare);
     }
@@ -236,12 +236,12 @@ const main = async (wallet) => {
       const whitelistedUser = isWhitelisted({
         username: username,
       });
-      const twitterInfo = {};
+      //const twitterInfo = {};
       const shareInfo = {};
       shareInfo.username = username;
       shareInfo.price = price;
 
-      if (!whitelistedUser) {
+      /*if (!whitelistedUser) {
         const userInfo = await getUserInfo(username);
         if (BuyStrategy.onlyBuyBlueVerified && !userInfo?.isBlueVerified) {
           continue;
@@ -250,7 +250,7 @@ const main = async (wallet) => {
         twitterInfo.favoriteAvg = userInfo.favoriteAvg;
         twitterInfo.followers = userInfo.followers_count;
         twitterInfo.posts = userInfo.statuses_count;
-      }
+      }*/
       const transaction = await publicClient.getTransaction({
         hash: action.txHash,
       });
@@ -269,13 +269,13 @@ const main = async (wallet) => {
           })
         )
       );
-      const checkFetchPrice = shouldFetchPrice(twitterInfo, shareInfo);
+      const checkFetchPrice = shouldFetchPrice(shareInfo);
       if (checkFetchPrice) {
         const lastPrice = await getBuyPrice(
           shareInfo.subject,
-          whitelistedUser && whitelistedUser?.buyAmount
-            ? whitelistedUser?.buyAmount
-            : 1
+          //whitelistedUser && whitelistedUser?.buyAmount
+           // ? whitelistedUser?.buyAmount
+            //: 1
         );
         const lastEthPrice = parseFloat(formatEther(lastPrice));
         shareInfo.price = lastEthPrice;
@@ -287,9 +287,9 @@ const main = async (wallet) => {
               trader: transaction.from,
               isBuy: action.action === "buy",
             },
-            bots
+            //bots
           ) &&
-          shouldBuy(twitterInfo, shareInfo)
+          shouldBuy(shareInfo)
         ) {
           logWork({
             walletAddress: wallet.address,
@@ -302,9 +302,9 @@ const main = async (wallet) => {
             shareInfo.subject,
             shareInfo.username,
             lastEthPrice,
-            whitelistedUser && whitelistedUser?.buyAmount
-              ? whitelistedUser?.buyAmount
-              : 1
+            //whitelistedUser && whitelistedUser?.buyAmount
+              //? whitelistedUser?.buyAmount
+              //: 1
           );
         }
       }
@@ -378,9 +378,9 @@ const main = async (wallet) => {
       console.log(JSON.stringify(shareObj));
       const ethPrice = parseFloat(formatEther(price).substring(0, 8)) * 0.9;
       const costEthPrice = shareObj.price;
-      const profit =
-        parseFloat(((ethPrice - costEthPrice) * ETH_USCT_Rate).toFixed(2)) -
-        0.12;
+      const profit = 0.000178125
+        //parseFloat(((ethPrice - costEthPrice) * ETH_USCT_Rate).toFixed(2)) -
+        //0.12;
       // 0.12 is gas fee, about 0.12 USD
       console.log(
         chalk[profit > 0 ? "green" : "yellow"](`profit: ${profit} USDT`)
