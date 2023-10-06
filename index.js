@@ -378,7 +378,7 @@ const main = async (wallet) => {
       console.log(JSON.stringify(shareObj));
       const ethPrice = parseFloat(formatEther(price).substring(0, 8)) * 0.9;
       const costEthPrice = shareObj.price;
-      const profit = 0.000178125
+      const profit = 0.000178125;
         //parseFloat(((ethPrice - costEthPrice) * ETH_USCT_Rate).toFixed(2)) -
         //0.12;
       // 0.12 is gas fee, about 0.12 USD
